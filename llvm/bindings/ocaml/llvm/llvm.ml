@@ -9,6 +9,7 @@
 
 type llcontext
 type llmodule
+type lllinker
 type lltype
 type llvalue
 type lluse
