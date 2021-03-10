@@ -10,6 +10,11 @@ type lldibuilder
 
 type llmetadata
 
+type lllocation = llmetadata
+type llscope = llmetadata
+type llsubprogram = llscope
+type llfile = llmetadata
+
 (** Source languages known by DWARF. *)
 module DWARFSourceLanguageKind = struct
   type t =
@@ -235,28 +240,28 @@ let dibuild_create_debug_location ?(inlined_at = llmetadata_null ()) llctx ~line
     ~column ~scope =
   dibuild_create_debug_location_helper llctx line column scope inlined_at
 
-external di_location_get_line : location:llmetadata -> int
+external di_location_get_line : lllocation -> int
   = "llvm_di_location_get_line"
 
-external di_location_get_column : location:llmetadata -> int
+external di_location_get_column : lllocation -> int
   = "llvm_di_location_get_column"
 
-external di_location_get_scope : location:llmetadata -> llmetadata
+external di_location_get_scope : lllocation -> llscope
   = "llvm_di_location_get_scope"
 
-external di_location_get_inlined_at : location:llmetadata -> llmetadata
+external di_location_get_inlined_at : lllocation -> llscope
   = "llvm_di_location_get_inlined_at"
 
-external di_scope_get_file : location:llmetadata -> llmetadata
+external di_scope_get_file : llscope -> llfile
   = "llvm_di_scope_get_file"
 
-external di_file_get_directory : file:llmetadata -> string
+external di_file_get_directory : llfile -> string
   = "llvm_di_file_get_directory"
 
-external di_file_get_filename : file:llmetadata -> string
+external di_file_get_filename : llfile -> string
   = "llvm_di_file_get_filename"
 
-external di_file_get_source : file:llmetadata -> string
+external di_file_get_source : llfile -> string
   = "llvm_di_file_get_source"
 
 external dibuild_get_or_create_type_array :
@@ -510,18 +515,18 @@ external ditype_get_line : llmetadata -> int = "llvm_ditype_get_line"
 
 external ditype_get_flags : llmetadata -> lldiflags = "llvm_ditype_get_flags"
 
-external get_subprogram : Llvm.llvalue -> llmetadata = "llvm_get_subprogram"
+external get_subprogram : Llvm.llvalue -> llsubprogram = "llvm_get_subprogram"
 
-external set_subprogram : Llvm.llvalue -> llmetadata -> unit
+external set_subprogram : Llvm.llvalue -> llsubprogram -> unit
   = "llvm_set_subprogram"
 
-external di_subprogram_get_line : llmetadata -> int
+external di_subprogram_get_line : llsubprogram -> int
   = "llvm_di_subprogram_get_line"
 
-external instruction_get_debug_loc : Llvm.llvalue -> llmetadata
+external instruction_get_debug_loc : Llvm.llvalue -> lllocation
   = "llvm_instruction_get_debug_loc"
 
-external instruction_set_debug_loc : Llvm.llvalue -> llmetadata -> unit
+external instruction_set_debug_loc : Llvm.llvalue -> lllocation -> unit
   = "llvm_instruction_set_debug_loc"
 
 external get_metadata_kind : llmetadata -> MetadataKind.t

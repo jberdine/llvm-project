@@ -10,6 +10,11 @@ type lldibuilder
 
 type llmetadata
 
+type lllocation = private llmetadata
+type llscope = private llmetadata
+type llsubprogram = private llscope
+type llfile = private llmetadata
+
 (** Source languages known by DWARF. *)
 module DWARFSourceLanguageKind : sig
   type t =
@@ -224,23 +229,23 @@ val dibuild_create_debug_location :
   line:int ->
   column:int ->
   scope:llmetadata ->
-  llmetadata
+  lllocation
 
-val di_location_get_line : location:llmetadata -> int
+val di_location_get_line : lllocation -> int
 
-val di_location_get_column : location:llmetadata -> int
+val di_location_get_column : lllocation -> int
 
-val di_location_get_scope : location:llmetadata -> llmetadata
+val di_location_get_scope : lllocation -> llscope
 
-val di_location_get_inlined_at : location:llmetadata -> llmetadata
+val di_location_get_inlined_at : lllocation -> llscope
 
-val di_scope_get_file : location:llmetadata -> llmetadata
+val di_scope_get_file : llscope -> llfile
 
-val di_file_get_directory : file:llmetadata -> string
+val di_file_get_directory : llfile -> string
 
-val di_file_get_filename : file:llmetadata -> string
+val di_file_get_filename : llfile -> string
 
-val di_file_get_source : file:llmetadata -> string
+val di_file_get_source : llfile -> string
 
 val dibuild_get_or_create_type_array :
   lldibuilder -> data:llmetadata array -> llmetadata
@@ -466,14 +471,14 @@ val ditype_get_line : llmetadata -> int
 
 val ditype_get_flags : llmetadata -> lldiflags
 
-val get_subprogram : Llvm.llvalue -> llmetadata
+val get_subprogram : Llvm.llvalue -> llsubprogram
 
-val set_subprogram : Llvm.llvalue -> llmetadata -> unit
+val set_subprogram : Llvm.llvalue -> llsubprogram -> unit
 
-val di_subprogram_get_line : llmetadata -> int
+val di_subprogram_get_line : llsubprogram -> int
 
-val instruction_get_debug_loc : Llvm.llvalue -> llmetadata
+val instruction_get_debug_loc : Llvm.llvalue -> lllocation
 
-val instruction_set_debug_loc : Llvm.llvalue -> llmetadata -> unit
+val instruction_set_debug_loc : Llvm.llvalue -> lllocation -> unit
 
 val get_metadata_kind : llmetadata -> MetadataKind.t
