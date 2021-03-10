@@ -156,7 +156,7 @@ end
 
 external debug_metadata_version : unit -> int = "llvm_debug_metadata_version"
 
-external get_module_debug_metadata_version : Llvm.llmodule -> unit
+external get_module_debug_metadata_version : Llvm.llmodule -> int
   = "llvm_get_module_debug_metadata_version"
 
 external dibuilder : Llvm.llmodule -> lldibuilder = "llvm_dibuilder"

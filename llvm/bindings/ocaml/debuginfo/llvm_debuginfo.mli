@@ -157,7 +157,7 @@ end
 
 val debug_metadata_version : unit -> int
 
-val get_module_debug_metadata_version : Llvm.llmodule -> unit
+val get_module_debug_metadata_version : Llvm.llmodule -> int
 
 val dibuilder : Llvm.llmodule -> lldibuilder
 
