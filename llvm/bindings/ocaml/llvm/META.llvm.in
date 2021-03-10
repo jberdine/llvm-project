@@ -45,6 +45,14 @@ package "ipo" (
     archive(native) = "llvm_ipo.cmxa"
 )
 
+package "debuginfo" (
+    requires = "llvm"
+    version = "@PACKAGE_VERSION@"
+    description = "DebugInfo support for LLVM"
+    archive(byte) = "llvm_debuginfo.cma"
+    archive(native) = "llvm_debuginfo.cmxa"
+)
+
 package "irreader" (
     requires = "llvm"
     version  = "@PACKAGE_VERSION@"
@@ -107,12 +115,4 @@ package "all_backends" (
     description = "All backends for LLVM"
     archive(byte) = "llvm_all_backends.cma"
     archive(native) = "llvm_all_backends.cmxa"
-)
-
-package "debuginfo" (
-    requires = "llvm"
-    version = "@PACKAGE_VERSION@"
-    description = "DebugInfo support for LLVM"
-    archive(byte) = "llvm_debuginfo.cma"
-    archive(native) = "llvm_debuginfo.cmxa"
 )

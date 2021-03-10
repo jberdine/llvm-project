@@ -10,9 +10,7 @@ type lldibuilder
 
 type llmetadata
 
-(*
- * Source languages known by DWARF.
- *)
+(** Source languages known by DWARF. *)
 module DWARFSourceLanguageKind = struct
   type t =
     | C89
@@ -108,9 +106,7 @@ external diflags_set : lldiflags -> DIFlag.t -> lldiflags = "llvm_diflags_set"
 
 external diflags_test : lldiflags -> DIFlag.t -> bool = "llvm_diflags_test"
 
-(**
- * The kind of metadata nodes.
- *)
+(** The kind of metadata nodes. *)
 module MetadataKind = struct
   type t =
     | MDStringMetadataKind
@@ -147,9 +143,7 @@ module MetadataKind = struct
     | DICommonBlockMetadataKind
 end
 
-(*
- * The amount of debug information to emit.
- *)
+(** The amount of debug information to emit. *)
 module DWARFEmissionKind = struct
   type t = None | Full | LineTablesOnly
 end

@@ -10,9 +10,7 @@ type lldibuilder
 
 type llmetadata
 
-(*
- * Source languages known by DWARF.
- *)
+(** Source languages known by DWARF. *)
 module DWARFSourceLanguageKind : sig
   type t =
     | C89
@@ -100,7 +98,7 @@ module DIFlag : sig
     | PtrToMemberRep
 end
 
-(* An opaque type to represent OR of multiple DIFlag.t. *)
+(** An opaque type to represent OR of multiple DIFlag.t. *)
 type lldiflags
 
 val diflags_get : DIFlag.t -> lldiflags
@@ -109,9 +107,7 @@ val diflags_set : lldiflags -> DIFlag.t -> lldiflags
 
 val diflags_test : lldiflags -> DIFlag.t -> bool
 
-(**
- * The kind of metadata nodes.
- *)
+(** The kind of metadata nodes. *)
 module MetadataKind : sig
   type t =
     | MDStringMetadataKind
@@ -148,9 +144,7 @@ module MetadataKind : sig
     | DICommonBlockMetadataKind
 end
 
-(*
- * The amount of debug information to emit.
- *)
+(** The amount of debug information to emit. *)
 module DWARFEmissionKind : sig
   type t = None | Full | LineTablesOnly
 end

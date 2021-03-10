@@ -1,5 +1,4 @@
-/*===-- debuginfo_ocaml.c - LLVM OCaml Glue ----------------------*- C++
--*-===*\
+/*===-- debuginfo_ocaml.c - LLVM OCaml Glue ---------------------*- C++ -*-===*\
 |*                                                                            *|
 |* Part of the LLVM Project, under the Apache License v2.0 with LLVM          *|
 |* Exceptions.                                                                *|
