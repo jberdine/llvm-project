@@ -28,6 +28,9 @@ type llmodule
     class. *)
 type lllinker
 
+(** Opaque representation of Metadata nodes. See the [llvm::Metadata] class. *)
+type llmetadata
+
 (** Each value in the LLVM IR has a type, an instance of [lltype]. See the
     [llvm::Type] class. *)
 type lltype
@@ -369,6 +372,15 @@ module DiagnosticSeverity : sig
   | Note
 end
 
+module ModuleFlagBehaviour :sig
+  type t =
+  | Error
+  | Warning
+  | Require
+  | Override
+  | Append
+  | AppendUnique
+end
 
 (** {6 Iteration} *)
 
@@ -533,7 +545,9 @@ val set_module_inline_asm : llmodule -> string -> unit
     See the method [llvm::Module::getContext] *)
 val module_context : llmodule -> llcontext
 
-
+val get_module_flag : llmodule -> string -> llmetadata
+val add_module_flag : llmodule -> ModuleFlagBehaviour.t ->
+                        string -> llmetadata -> unit
 (** {6 Types} *)
 
 (** [classify_type ty] returns the {!TypeKind.t} corresponding to the type [ty].
@@ -919,6 +933,13 @@ val get_named_metadata : llmodule -> string -> llvalue array
     [llvm::MDNode::addOperand()]. *)
 val add_named_metadata_operand : llmodule -> string -> llvalue -> unit
 
+(** Obtain a Value as a Metadata.
+    See the method [llvm::ValueAsMetadata::get()]. *)
+val value_as_metadata : llvalue -> llmetadata
+
+(** Obtain a Value as a Metadata.
+    See the method [llvm::MetadataAsValue::get()]. *)
+val metadata_as_value : llcontext -> llmetadata -> llvalue
 
 (** {7 Operations on scalar constants} *)
 

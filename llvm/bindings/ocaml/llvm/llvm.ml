@@ -10,6 +10,7 @@
 type llcontext
 type llmodule
 type lllinker
+type llmetadata
 type lltype
 type llvalue
 type lluse
@@ -331,6 +332,16 @@ module DiagnosticSeverity = struct
   | Note
 end
 
+module ModuleFlagBehaviour = struct
+  type t =
+  | Error
+  | Warning
+  | Require
+  | Override
+  | Append
+  | AppendUnique
+end
+
 exception IoError of string
 
 let () = Callback.register_exception "Llvm.IoError" (IoError "")
@@ -430,6 +441,10 @@ external string_of_llmodule : llmodule -> string = "llvm_string_of_llmodule"
 external set_module_inline_asm : llmodule -> string -> unit
                                = "llvm_set_module_inline_asm"
 external module_context : llmodule -> llcontext = "LLVMGetModuleContext"
+external get_module_flag : llmodule -> string -> llmetadata
+                         = "llvm_get_module_flag"
+external add_module_flag : llmodule -> ModuleFlagBehaviour.t ->
+            string -> llmetadata -> unit = "llvm_add_module_flag"
 
 (*===-- Types -------------------------------------------------------------===*)
 external classify_type : lltype -> TypeKind.t = "llvm_classify_type"
@@ -574,6 +589,9 @@ external get_named_metadata : llmodule -> string -> llvalue array
                             = "llvm_get_namedmd"
 external add_named_metadata_operand : llmodule -> string -> llvalue -> unit
                                     = "llvm_append_namedmd"
+external value_as_metadata : llvalue -> llmetadata = "llvm_value_as_metadata"
+external metadata_as_value : llcontext -> llmetadata -> llvalue
+                        = "llvm_metadata_as_value"
 
 (*--... Operations on scalar constants .....................................--*)
 external const_int : lltype -> int -> llvalue = "llvm_const_int"

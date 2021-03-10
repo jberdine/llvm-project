@@ -319,6 +319,19 @@ CAMLprim value llvm_set_module_inline_asm(LLVMModuleRef M, value Asm) {
   return Val_unit;
 }
 
+/* llmodule -> string -> llmetadata */
+CAMLprim LLVMMetadataRef llvm_get_module_flag(LLVMModuleRef M, value Key) {
+  return LLVMGetModuleFlag(M, String_val(Key), caml_string_length(Key));
+}
+
+CAMLprim value llvm_add_module_flag(LLVMModuleRef M,
+                                    LLVMModuleFlagBehavior Behaviour, value Key,
+                                    LLVMMetadataRef Val) {
+  LLVMAddModuleFlag(M, Int_val(Behaviour), String_val(Key),
+                    caml_string_length(Key), Val);
+  return Val_unit;
+}
+
 /*===-- Types -------------------------------------------------------------===*/
 
 /* lltype -> TypeKind.t */
@@ -861,6 +874,17 @@ CAMLprim value llvm_get_namedmd(LLVMModuleRef M, value Name)
 CAMLprim value llvm_append_namedmd(LLVMModuleRef M, value Name, LLVMValueRef Val) {
   LLVMAddNamedMetadataOperand(M, String_val(Name), Val);
   return Val_unit;
+}
+
+/* llvalue -> llmetadata */
+CAMLprim LLVMMetadataRef llvm_value_as_metadata(LLVMValueRef Val) {
+  return LLVMValueAsMetadata(Val);
+}
+
+/* llcontext -> llmetadata -> llvalue */
+CAMLprim LLVMValueRef llvm_metadata_as_value(LLVMContextRef C,
+                                             LLVMMetadataRef MD) {
+  return LLVMMetadataAsValue(C, MD);
 }
 
 /*--... Operations on scalar constants .....................................--*/
