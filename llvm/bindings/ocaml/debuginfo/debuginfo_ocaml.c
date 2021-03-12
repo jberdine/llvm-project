@@ -139,6 +139,17 @@ static LLVMDIFlags map_DIFlag(LLVMDIFlag_i DIF) {
   }
 }
 
+/* Convert a C pointer to an OCaml option */
+CAMLprim value ptr_to_option(void *Ptr) {
+  CAMLparam0();
+  CAMLlocal1(Option);
+  if (!Ptr)
+    CAMLreturn(Val_int(0));
+  Option = caml_alloc_small(1, 0);
+  Store_field(Option, 0, (value)Ptr);
+  CAMLreturn(Option);
+}
+
 CAMLprim value llvm_debug_metadata_version(value Unit) {
   return Val_int(LLVMDebugMetadataVersion());
 }
@@ -341,8 +352,8 @@ llvm_di_location_get_inlined_at(LLVMMetadataRef Location) {
   return LLVMDILocationGetInlinedAt(Location);
 }
 
-CAMLprim LLVMMetadataRef llvm_di_scope_get_file(LLVMMetadataRef Scope) {
-  return LLVMDIScopeGetFile(Scope);
+CAMLprim value llvm_di_scope_get_file(LLVMMetadataRef Scope) {
+  return (ptr_to_option(LLVMDIScopeGetFile(Scope)));
 }
 
 CAMLprim value llvm_di_file_get_directory(LLVMMetadataRef File) {
@@ -849,8 +860,8 @@ CAMLprim value llvm_ditype_get_flags(LLVMMetadataRef DType) {
   return alloc_diflags(Flags);
 }
 
-CAMLprim LLVMMetadataRef llvm_get_subprogram(LLVMValueRef Func) {
-  return LLVMGetSubprogram(Func);
+CAMLprim value llvm_get_subprogram(LLVMValueRef Func) {
+  return (ptr_to_option(LLVMGetSubprogram(Func)));
 }
 
 CAMLprim value llvm_set_subprogram(LLVMValueRef Func, LLVMMetadataRef SP) {
@@ -862,8 +873,8 @@ CAMLprim value llvm_di_subprogram_get_line(LLVMMetadataRef Subprogram) {
   return Int_val(LLVMDISubprogramGetLine(Subprogram));
 }
 
-CAMLprim LLVMMetadataRef llvm_instruction_get_debug_loc(LLVMValueRef Inst) {
-  return LLVMInstructionGetDebugLoc(Inst);
+CAMLprim value llvm_instruction_get_debug_loc(LLVMValueRef Inst) {
+  return (ptr_to_option(LLVMInstructionGetDebugLoc(Inst)));
 }
 
 CAMLprim value llvm_instruction_set_debug_loc(LLVMValueRef Inst,

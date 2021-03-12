@@ -252,7 +252,7 @@ external di_location_get_scope : lllocation -> llscope
 external di_location_get_inlined_at : lllocation -> llscope
   = "llvm_di_location_get_inlined_at"
 
-external di_scope_get_file : llscope -> llfile
+external di_scope_get_file : llscope -> llfile option
   = "llvm_di_scope_get_file"
 
 external di_file_get_directory : llfile -> string
@@ -515,7 +515,8 @@ external ditype_get_line : llmetadata -> int = "llvm_ditype_get_line"
 
 external ditype_get_flags : llmetadata -> lldiflags = "llvm_ditype_get_flags"
 
-external get_subprogram : Llvm.llvalue -> llsubprogram = "llvm_get_subprogram"
+external get_subprogram : Llvm.llvalue -> llsubprogram option
+  = "llvm_get_subprogram"
 
 external set_subprogram : Llvm.llvalue -> llsubprogram -> unit
   = "llvm_set_subprogram"
@@ -523,7 +524,7 @@ external set_subprogram : Llvm.llvalue -> llsubprogram -> unit
 external di_subprogram_get_line : llsubprogram -> int
   = "llvm_di_subprogram_get_line"
 
-external instruction_get_debug_loc : Llvm.llvalue -> lllocation
+external instruction_get_debug_loc : Llvm.llvalue -> lllocation option
   = "llvm_instruction_get_debug_loc"
 
 external instruction_set_debug_loc : Llvm.llvalue -> lllocation -> unit

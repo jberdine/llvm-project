@@ -239,7 +239,7 @@ val di_location_get_scope : lllocation -> llscope
 
 val di_location_get_inlined_at : lllocation -> llscope
 
-val di_scope_get_file : llscope -> llfile
+val di_scope_get_file : llscope -> llfile option
 
 val di_file_get_directory : llfile -> string
 
@@ -471,13 +471,13 @@ val ditype_get_line : llmetadata -> int
 
 val ditype_get_flags : llmetadata -> lldiflags
 
-val get_subprogram : Llvm.llvalue -> llsubprogram
+val get_subprogram : Llvm.llvalue -> llsubprogram option
 
 val set_subprogram : Llvm.llvalue -> llsubprogram -> unit
 
 val di_subprogram_get_line : llsubprogram -> int
 
-val instruction_get_debug_loc : Llvm.llvalue -> lllocation
+val instruction_get_debug_loc : Llvm.llvalue -> lllocation option
 
 val instruction_set_debug_loc : Llvm.llvalue -> lllocation -> unit
 
