@@ -359,27 +359,36 @@ CAMLprim value llvm_di_scope_get_file(LLVMMetadataRef Scope) {
 CAMLprim value llvm_di_file_get_directory(LLVMMetadataRef File) {
   unsigned Len;
   const char *Directory = LLVMDIFileGetDirectory(File, &Len);
-  value String = caml_alloc_string(Len);
-  memcpy(String_val(String), Directory, Len);
-
+  value String;
+  if (Directory) {
+    String = caml_alloc_initialized_string(Len, Directory);
+  } else {
+    String = caml_alloc_string(0);
+  }
   return String;
 }
 
 CAMLprim value llvm_di_file_get_filename(LLVMMetadataRef File) {
   unsigned Len;
   const char *Filename = LLVMDIFileGetFilename(File, &Len);
-  value String = caml_alloc_string(Len);
-  memcpy(String_val(String), Filename, Len);
-
+  value String;
+  if (Filename) {
+    String = caml_alloc_initialized_string(Len, Filename);
+  } else {
+    String = caml_alloc_string(0);
+  }
   return String;
 }
 
 CAMLprim value llvm_di_file_get_source(LLVMMetadataRef File) {
   unsigned Len;
   const char *Source = LLVMDIFileGetSource(File, &Len);
-  value String = caml_alloc_string(Len);
-  memcpy(String_val(String), Source, Len);
-
+  value String;
+  if (Source) {
+    String = caml_alloc_initialized_string(Len, Source);
+  } else {
+    String = caml_alloc_string(0);
+  }
   return String;
 }
 
@@ -829,9 +838,12 @@ llvm_dibuild_create_artificial_type(value Builder, LLVMMetadataRef Type) {
 CAMLprim value llvm_ditype_get_name(LLVMMetadataRef DType) {
   size_t Len;
   const char *Name = LLVMDITypeGetName(DType, &Len);
-  value String = caml_alloc_string(Len);
-  memcpy(String_val(String), Name, (int)Len);
-
+  value String;
+  if (Name) {
+    String = caml_alloc_initialized_string(Len, Name);
+  } else {
+    String = caml_alloc_string(0);
+  }
   return String;
 }
 
