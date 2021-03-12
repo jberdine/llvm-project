@@ -1177,6 +1177,25 @@ CAMLprim value llvm_set_alignment(value Bytes, LLVMValueRef Global) {
   return Val_unit;
 }
 
+/* llvalue -> (llmdkind * llmetadata) array */
+CAMLprim value llvm_global_copy_all_metadata(LLVMValueRef Global) {
+  CAMLparam0();
+  CAMLlocal2(Array, Pair);
+  size_t NumEntries;
+  LLVMValueMetadataEntry *Entries =
+      LLVMGlobalCopyAllMetadata(Global, &NumEntries);
+  Array = caml_alloc_tuple(NumEntries);
+  for (int i = 0; i < NumEntries; i++) {
+    Pair = caml_alloc_tuple(2);
+    Store_field(Pair, 0, Val_int(LLVMValueMetadataEntriesGetKind(Entries, i)));
+    Store_field(Pair, 1,
+                (value)LLVMValueMetadataEntriesGetMetadata(Entries, i));
+    Store_field(Array, i, Pair);
+  }
+  LLVMDisposeValueMetadataEntries(Entries);
+  CAMLreturn(Array);
+}
+
 /*--... Operations on uses .................................................--*/
 
 /* llvalue -> lluse option */

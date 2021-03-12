@@ -8,12 +8,13 @@
 
 type lldibuilder
 
-type llmetadata
+type llmetadata = Llvm.llmetadata
 
 type lllocation = private llmetadata
 type llscope = private llmetadata
 type llsubprogram = private llscope
 type llfile = private llmetadata
+type llvariable = private llmetadata
 
 (** Source languages known by DWARF. *)
 module DWARFSourceLanguageKind : sig
@@ -480,5 +481,18 @@ val di_subprogram_get_line : llsubprogram -> int
 val instruction_get_debug_loc : Llvm.llvalue -> lllocation option
 
 val instruction_set_debug_loc : Llvm.llvalue -> lllocation -> unit
+
+(** [di_global_variable_expression_get_variable gve] returns the debug variable
+    of [gve], which must be a [DIGlobalVariableExpression].
+    See the [llvm::DIGlobalVariableExpression::getVariable()] method. *)
+val di_global_variable_expression_get_variable : llmetadata -> llvariable option
+
+(** [di_variable_get_line v] returns the line number of the variable [v].
+    See the [llvm::DIVariable::getLine()] method. *)
+val di_variable_get_line : llvariable -> int
+
+(** [di_variable_get_file v] returns the file of the variable [v].
+    See the [llvm::DIVariable::getFile()] method. *)
+val di_variable_get_file : llvariable -> llfile option
 
 val get_metadata_kind : llmetadata -> MetadataKind.t

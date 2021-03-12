@@ -8,12 +8,13 @@
 
 type lldibuilder
 
-type llmetadata
+type llmetadata = Llvm.llmetadata
 
 type lllocation = llmetadata
 type llscope = llmetadata
 type llsubprogram = llscope
 type llfile = llmetadata
+type llvariable = llmetadata
 
 (** Source languages known by DWARF. *)
 module DWARFSourceLanguageKind = struct
@@ -529,6 +530,16 @@ external instruction_get_debug_loc : Llvm.llvalue -> lllocation option
 
 external instruction_set_debug_loc : Llvm.llvalue -> lllocation -> unit
   = "llvm_instruction_set_debug_loc"
+
+external di_global_variable_expression_get_variable
+  : llmetadata -> llvariable option
+  = "llvm_di_global_variable_expression_get_variable"
+
+external di_variable_get_line : llvariable -> int
+  = "llvm_di_variable_get_line"
+
+external di_variable_get_file : llvariable -> llfile option
+  = "llvm_di_variable_get_file"
 
 external get_metadata_kind : llmetadata -> MetadataKind.t
   = "llvm_get_metadata_kind"

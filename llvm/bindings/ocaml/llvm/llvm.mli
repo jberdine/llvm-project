@@ -1399,6 +1399,12 @@ val alignment : llvalue -> int
     [n] bytes. See the method [llvm::GlobalValue::setAlignment]. *)
 val set_alignment : int -> llvalue -> unit
 
+(** [global_copy_all_metadata g] returns all the metadata associated with [g],
+    which must be an [Instruction] or [GlobalObject].
+    See the [llvm::Instruction::getAllMetadata()] and
+    [llvm::GlobalObject::getAllMetadata()] methods. *)
+val global_copy_all_metadata : llvalue -> (llmdkind * llmetadata) array
+
 
 (** {7 Operations on global variables} *)
 

@@ -895,6 +895,22 @@ CAMLprim value llvm_instruction_set_debug_loc(LLVMValueRef Inst,
   return Val_unit;
 }
 
+/* llmetadata -> llvariable option */
+CAMLprim value
+llvm_di_global_variable_expression_get_variable(LLVMMetadataRef GVE) {
+  return (ptr_to_option(LLVMDIGlobalVariableExpressionGetVariable(GVE)));
+}
+
+/* llvariable -> int */
+CAMLprim value llvm_di_variable_get_line(LLVMMetadataRef Variable) {
+  return Val_int(LLVMDIVariableGetLine(Variable));
+}
+
+/* llvariable -> llfile option */
+CAMLprim value llvm_di_variable_get_file(LLVMMetadataRef Variable) {
+  return (ptr_to_option(LLVMDIVariableGetFile(Variable)));
+}
+
 CAMLprim value llvm_get_metadata_kind(LLVMMetadataRef Metadata) {
   return Val_int(LLVMGetMetadataKind(Metadata));
 }
