@@ -1402,7 +1402,7 @@ module PassManager = struct
   type any = [ `Module | `Function ]
   external create : unit -> [ `Module ] t = "llvm_passmanager_create"
   external create_function : llmodule -> [ `Function ] t
-                           = "LLVMCreateFunctionPassManager"
+                           = "llvm_passmanager_create_function"
   external run_module : llmodule -> [ `Module ] t -> bool
                       = "llvm_passmanager_run_module"
   external initialize : [ `Function ] t -> bool = "llvm_passmanager_initialize"

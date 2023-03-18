@@ -2856,32 +2856,38 @@ value llvm_memorybuffer_dispose(value MemBuf) {
 /*===-- Pass Managers -----------------------------------------------------===*/
 
 /* unit -> [ `Module ] PassManager.t */
-LLVMPassManagerRef llvm_passmanager_create(value Unit) {
-  return LLVMCreatePassManager();
+value llvm_passmanager_create(value Unit) {
+  return to_val(LLVMCreatePassManager());
+}
+
+/* llmodule -> [ `Function ] PassManager.t */
+value llvm_passmanager_create_function(value M) {
+  return to_val(LLVMCreateFunctionPassManagerForModule(Module_val(M)));
 }
 
 /* llmodule -> [ `Function ] PassManager.t -> bool */
-value llvm_passmanager_run_module(LLVMModuleRef M, LLVMPassManagerRef PM) {
-  return Val_bool(LLVMRunPassManager(PM, M));
+value llvm_passmanager_run_module(value M, value PM) {
+  return Val_bool(LLVMRunPassManager(PassManager_val(PM), Module_val(M)));
 }
 
 /* [ `Function ] PassManager.t -> bool */
-value llvm_passmanager_initialize(LLVMPassManagerRef FPM) {
-  return Val_bool(LLVMInitializeFunctionPassManager(FPM));
+value llvm_passmanager_initialize(value FPM) {
+  return Val_bool(LLVMInitializeFunctionPassManager(PassManager_val(FPM)));
 }
 
 /* llvalue -> [ `Function ] PassManager.t -> bool */
-value llvm_passmanager_run_function(LLVMValueRef F, LLVMPassManagerRef FPM) {
-  return Val_bool(LLVMRunFunctionPassManager(FPM, F));
+value llvm_passmanager_run_function(value F, value FPM) {
+  return Val_bool(
+      LLVMRunFunctionPassManager(PassManager_val(FPM), Value_val(F)));
 }
 
 /* [ `Function ] PassManager.t -> bool */
-value llvm_passmanager_finalize(LLVMPassManagerRef FPM) {
-  return Val_bool(LLVMFinalizeFunctionPassManager(FPM));
+value llvm_passmanager_finalize(value FPM) {
+  return Val_bool(LLVMFinalizeFunctionPassManager(PassManager_val(FPM)));
 }
 
 /* PassManager.any PassManager.t -> unit */
-value llvm_passmanager_dispose(LLVMPassManagerRef PM) {
-  LLVMDisposePassManager(PM);
+value llvm_passmanager_dispose(value PM) {
+  LLVMDisposePassManager(PassManager_val(PM));
   return Val_unit;
 }

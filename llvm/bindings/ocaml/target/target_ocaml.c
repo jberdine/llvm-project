@@ -333,8 +333,7 @@ value llvm_targetmachine_emit_to_memory_buffer(value Module, value FileType,
 }
 
 /* TargetMachine.t -> Llvm.PassManager.t -> unit */
-value llvm_targetmachine_add_analysis_passes(LLVMPassManagerRef PM,
-                                             value Machine) {
-  LLVMAddAnalysisPasses(TargetMachine_val(Machine), PM);
+value llvm_targetmachine_add_analysis_passes(value PM, value Machine) {
+  LLVMAddAnalysisPasses(TargetMachine_val(Machine), PassManager_val(PM));
   return Val_unit;
 }
